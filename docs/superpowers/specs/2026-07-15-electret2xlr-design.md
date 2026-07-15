@@ -69,7 +69,7 @@ Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
 
 - Tutti jellybean, **a stock LCSC** (preferire basic/preferred parts) o dallo stock personale, come da CLAUDE.md.
 - **Vincolo footprint: nessun componente sotto lo 0603** (saldabilità a mano). Ammessi 0603/0805/1206, SOT-23, SOD-323.
-- Transistor: MMBT3904 / MMBT3906 (SOT-23). Zener 8.2V SOD-323. Ceramici X7R 50V dove siedono su tensione elevata (accoppiamenti/bypass a ~23V DC).
+- Transistor: MMBT3904 / MMBT3906 (SOT-23). Zener 8.2V SOD-123. Ceramici X7R 50V dove siedono su tensione elevata (accoppiamenti/bypass a ~23V DC).
 - Gli opamp a stock (LM8261, LM358D) sono stati valutati e scartati: non reggono 48V (servirebbe comunque il regolatore), LM358 rumoroso e con crossover, e si perderebbe il bilanciamento DC naturale dei collettori sui pin.
 - I valori sono nominali: possibile bench tuning dopo il primo prototipo.
 

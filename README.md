@@ -98,6 +98,8 @@ Il bordo della scheda si infila fra i tre pin/bicchierini del NC3MXX (interasse 
 
 Verificare visivamente che non ci siano ponti di stagno accidentali fra pin adiacenti prima di richiudere lo shell.
 
+**Pad guscio (SHELL):** la piazzola di contatto con la calotta metallica del connettore (nodo `SHELL`, dove arriva CSH) è una feature di rame da disegnare **a mano nel layout KiCad** — non è un componente della netlist. Di conseguenza `pcb build` segnala un warning ERC di net a singolo pin per `SHELL`: è atteso e corretto, non un errore.
+
 ## Cablaggio capsula / jack
 
 - **Capsula a 2 terminali saldata diretta**: sulle piazzole THT MIC1 (passo 2.54mm), segnale/bias su un pad, GND sull'altro — nessuna polarità critica lato pad (la capsula stessa ha verso, va rispettato secondo il suo datasheet).
