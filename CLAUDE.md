@@ -6,6 +6,7 @@ Adattatore microfono electret → XLR bilanciato alimentato da phantom 48V, desc
 
 - **Preferire sempre componenti già presenti a stock personale oppure a stock presso LCSC.** In fase di scelta parti, verificare la disponibilità LCSC (preferire le "basic/preferred parts" quando possibile).
 - Stock personale noto (parziale): opamp LM8261, LM358D.
+- **Footprint minimo 0603**: mai usare componenti più piccoli di 0603 (saldabilità a mano).
 
 ## Toolchain
 
