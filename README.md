@@ -23,7 +23,7 @@ Due emitter follower PNP appaiati (MMBT3906) generano l'uscita bilanciata:
 - **Q2 (ramo "caldo")**: base accoppiata in AC al segnale della capsula (C2, 22µF), collettore a massa, emettitore alimentato da pin 2 attraverso R1 (7.5kΩ) — la corrente di segnale modula l'assorbimento su pin 2. CB2 (1µF/50V X7R) + RB2 (47Ω stopper) bypassano R1 alle frequenze audio, abbassando l'impedenza d'uscita vista dal pin.
 - **Q3 (ramo "freddo")**: identico a Q2 ma con la base messa a massa in AC (C3), emettitore alimentato da pin 3 via R2 (10kΩ), bypass gemello CB3+RB3. Nessun segnale sulla base: il ramo freddo replica solo l'impedenza del ramo caldo, senza audio.
 
-Il risultato è una sorgente pseudo-bilanciata a **~78Ω**, piatta in banda audio, con un roll-off passa-alto deliberato introdotto dal bypass di emettitore (non un difetto: serve a togliere di mezzo rumore e derive sub-audio). Assorbimento ~3mA per pin, simmetrico entro il 5% — compatibile sia con ingressi bilanciati elettronici sia a trasformatore.
+Il risultato è una sorgente pseudo-bilanciata a **~78Ω** (valore di progetto ereditato dalla topologia di riferimento, non ricalcolato nella verifica SPICE di questo progetto), piatta in banda audio, con un roll-off passa-alto deliberato introdotto dal bypass di emettitore (non un difetto: serve a togliere di mezzo rumore e derive sub-audio). Assorbimento ~3mA per pin, simmetrico entro il 5% — compatibile sia con ingressi bilanciati elettronici sia a trasformatore.
 
 CB2/CB3 sono impostati a **1µF** (non 22µF): un valore più alto avrebbe spostato il ginocchio passa-alto sotto 1Hz, vanificando il roll-off voluto attorno ai 30Hz — vedi `docs/sim-results.md` per la derivazione.
 

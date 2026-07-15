@@ -29,8 +29,8 @@ Tre stadi funzionali (~15 componenti):
 ### Alimentazione (moltiplicatore di capacità)
 
 - Prelievo simmetrico dai pin 2 e 3.
-- Zener 8.2V (SOD-323) come riferimento grezzo.
-- Filtro RC 100kΩ + 22µF: corner sotto 1Hz, elimina il rumore di valanga dello zener.
+- Zener 8.2V (SOD-123) come riferimento grezzo.
+- Filtro RC (R9 47kΩ + C4 47µF): corner sotto 1Hz, elimina il rumore di valanga dello zener.
 - Emitter follower NPN Q1 (MMBT3904) → rail PIP ~7.5V pulito, bypass 10µF.
 - Bias capsula: 6.8kΩ dal rail PIP al nodo segnale/tip.
 
