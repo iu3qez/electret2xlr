@@ -1,0 +1,12 @@
+* Trivial pass-through models for purely mechanical connectors, used only
+* so that `pcb sim` can generate a netlist for the whole board.
+*
+* J1 (XLR3) and J2 (3.5mm jack) contribute no electrical behavior of their
+* own: in the testbench the phantom supply is injected directly on P2/P3
+* and the capsule stimulus directly on MICIN, i.e. exactly where these
+* connectors would otherwise hand off to the outside world. The models
+* below are therefore empty subcircuits (no internal elements) - they
+* exist purely to satisfy the "every component needs a SpiceModel" rule.
+
+.SUBCKT CONN3 A B C
+.ENDS CONN3

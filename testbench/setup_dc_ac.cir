@@ -1,0 +1,75 @@
+* electret2xlr - Task 5 testbench: fantasma P48 + stimolo capsula
+*
+* Sorgente phantom: 48V attraverso 6.8k verso ciascuno di P2 e P3 (rif. brief).
+* Capsula electret: sink di corrente DC ~0.5mA sul nodo MICIN, con una
+* iniezione di corrente AC di ampiezza unitaria per il calcolo della
+* risposta in frequenza (analisi lineare .ac, l'ampiezza assoluta e'
+* arbitraria: cio' che conta e' la forma della risposta in dB).
+*
+* J1/J2/TP1/TP2 sono esclusi dal netlist (Component(dnp=True) via
+* --config sim_mode=true): la loro funzione elettrica e' sostituita da
+* queste stesse sorgenti, applicate esattamente ai nodi a cui si
+* interfaccerebbero (P2/P3 per J1, MICIN per J2).
+*
+* SHELL e' collegato solo a CSH (verso GND): sulla board reale il nodo
+* prosegue meccanicamente nella calotta metallica del connettore XLR
+* (non e' un pin logico di J1). In simulazione, senza J1, resterebbe un
+* nodo isolato dietro un condensatore ideale (matrice singolare in DC):
+* un bleed resistor da 1G verso massa, solo per questo testbench,
+* elimina l'artefatto senza toccare nessun criterio di accettazione.
+R_SHELL_BLEED SHELL 0 1G
+
+V48 VCC48 0 DC 48
+R_P2 VCC48 P2 6.8k
+R_P3 VCC48 P3 6.8k
+
+I_MIC MICIN 0 DC 0.5m AC 1
+
+.control
+  op
+  echo
+  echo "=== DC operating point ==="
+  print v(vpip) v(vref) v(micout) v(p2) v(p3) v(q1b)
+  print @r_p2[i] @r_p3[i]
+  echo
+
+  ac dec 50 0.01 100k
+  let vdiff = v(p2) - v(p3)
+  let vdiff_db = db(vdiff)
+  let vdiff_deg = ph(vdiff)*180/3.14159265
+  echo "=== AC: risposta differenziale P2-P3 (dB, gradi) ==="
+  meas ac vdb_001  find vdiff_db at=0.01
+  meas ac vdb_003  find vdiff_db at=0.03
+  meas ac vdb_01   find vdiff_db at=0.1
+  meas ac vdb_03   find vdiff_db at=0.3
+  meas ac vdb_1    find vdiff_db at=1
+  meas ac vdb_2    find vdiff_db at=2
+  meas ac vdb_3    find vdiff_db at=3
+  meas ac vdb_5    find vdiff_db at=5
+  meas ac vdb_10   find vdiff_db at=10
+  meas ac vdb_15   find vdiff_db at=15
+  meas ac vdb_20   find vdiff_db at=20
+  meas ac vdb_25   find vdiff_db at=25
+  meas ac vdb_26   find vdiff_db at=26
+  meas ac vdb_27   find vdiff_db at=27
+  meas ac vdb_28   find vdiff_db at=28
+  meas ac vdb_29   find vdiff_db at=29
+  meas ac vdb_30   find vdiff_db at=30
+  meas ac vdb_31   find vdiff_db at=31
+  meas ac vdb_32   find vdiff_db at=32
+  meas ac vdb_33   find vdiff_db at=33
+  meas ac vdb_35   find vdiff_db at=35
+  meas ac vdb_40   find vdiff_db at=40
+  meas ac vdb_50   find vdiff_db at=50
+  meas ac vdb_60   find vdiff_db at=60
+  meas ac vdb_70   find vdiff_db at=70
+  meas ac vdb_100  find vdiff_db at=100
+  meas ac vdb_1k   find vdiff_db at=1k
+  meas ac vdb_5k   find vdiff_db at=5k
+  meas ac vdb_10k  find vdiff_db at=10k
+  meas ac vdb_20k  find vdiff_db at=20k
+  meas ac vdb_50k  find vdiff_db at=50k
+  meas ac phase_1k find vdiff_deg at=1k
+
+  wrdata testbench/output/ac_response.txt vdiff_db
+.endc

@@ -15,6 +15,12 @@ Zener = Module("@stdlib/generics/Zener.zen")
 FerriteBead = Module("@stdlib/generics/FerriteBead.zen")
 TestPoint = Module("@stdlib/generics/TestPoint.zen")
 
+# Solo per `pcb sim --config sim_mode=true`: i test point (TP1/TP2) sono
+# probe da banco senza modello SPICE proprio (lo stdlib TestPoint.zen non
+# lo espone) e senza ruolo elettrico nella simulazione. In produzione
+# restano popolati normalmente (default False).
+sim_mode = config(bool, default=False, optional=True, help="Escludi i test point dal netlist SPICE per la simulazione")
+
 GND = Net()
 P2 = Net()
 P3 = Net()
@@ -43,6 +49,12 @@ Component(
     footprint="Package_TO_SOT_SMD:SOT-23",
     part=Part(mpn="MMBT3904", manufacturer="onsemi"),
     pins={"B": Q1B, "E": VPIP, "C": P3},
+    spice_model=SpiceModel(
+        "spice/Transistors.lib",
+        "Q_NPN_MMBT3904",
+        nets=[Q1B, VPIP, P3],
+        args={},
+    ),
 )
 Capacitor(name="C5", value="10uF", package="0805", voltage="25V", P1=VPIP, P2=GND)
 Capacitor(name="C1", value="22uF", package="1206", dielectric="X5R", voltage="25V", P1=VPIP, P2=GND)
@@ -54,9 +66,12 @@ Component(
     footprint="Connector_Audio:Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal",
     part=Part(mpn="SJ-3523-SMT-TR", manufacturer="Same Sky (CUI Devices)"),
     pins={"T": MICIN, "R": MICIN, "S": GND},
+    # Purely mechanical part; the sim testbench injects the capsule
+    # stimulus directly on MICIN, i.e. where this connector hands off.
+    spice_model=SpiceModel("spice/Connector.lib", "CONN3", nets=[MICIN, MICIN, GND], args={}),
 )
-TestPoint(name="MIC1_1", variant="THTPad_D1.0mm_Drill0.5mm", P1=MICIN)
-TestPoint(name="MIC1_2", variant="THTPad_D1.0mm_Drill0.5mm", P1=GND)
+TestPoint(name="MIC1_1", variant="THTPad_D1.0mm_Drill0.5mm", P1=MICIN, dnp=sim_mode)
+TestPoint(name="MIC1_2", variant="THTPad_D1.0mm_Drill0.5mm", P1=GND, dnp=sim_mode)
 Capacitor(name="CIN", value="220pF", package="0603", dielectric="C0G", P1=MICIN, P2=GND)
 FerriteBead(name="FB1", value="600ohm", frequency="100MHz", current="500mA", package="0603", P1=MICIN, P2=MICF)
 Resistor(name="RIN", value="100ohm", package="0603", P1=MICF, P2=MICOUT)
@@ -72,9 +87,15 @@ Component(
     footprint="Package_TO_SOT_SMD:SOT-23",
     part=Part(mpn="MMBT3906", manufacturer="onsemi"),
     pins={"B": Q2B, "E": Q2E, "C": GND},
+    spice_model=SpiceModel(
+        "spice/Transistors.lib",
+        "Q_PNP_MMBT3906",
+        nets=[Q2B, Q2E, GND],
+        args={},
+    ),
 )
 Resistor(name="R1", value="7.5kohm", package="1206", P1=P2, P2=Q2E)
-Capacitor(name="CB2", value="22uF", package="1206", dielectric="X7R", voltage="50V", P1=Q2E, P2=NB2)
+Capacitor(name="CB2", value="1uF", package="1206", dielectric="X7R", voltage="50V", P1=Q2E, P2=NB2)
 Resistor(name="RB2", value="47ohm", package="0603", P1=NB2, P2=P2)
 
 Resistor(name="R6", value="100kohm", package="0603", P1=VPIP, P2=Q3B)
@@ -86,9 +107,15 @@ Component(
     footprint="Package_TO_SOT_SMD:SOT-23",
     part=Part(mpn="MMBT3906", manufacturer="onsemi"),
     pins={"B": Q3B, "E": Q3E, "C": GND},
+    spice_model=SpiceModel(
+        "spice/Transistors.lib",
+        "Q_PNP_MMBT3906",
+        nets=[Q3B, Q3E, GND],
+        args={},
+    ),
 )
 Resistor(name="R2", value="10kohm", package="1206", P1=P3, P2=Q3E)
-Capacitor(name="CB3", value="22uF", package="1206", dielectric="X7R", voltage="50V", P1=Q3E, P2=NB3)
+Capacitor(name="CB3", value="1uF", package="1206", dielectric="X7R", voltage="50V", P1=Q3E, P2=NB3)
 Resistor(name="RB3", value="47ohm", package="0603", P1=NB3, P2=P3)
 
 # --- XLR e difesa RF ai pin ---
@@ -98,6 +125,9 @@ Component(
     footprint="Connector_Audio:Jack_XLR_Neutrik_NC3MBH_Horizontal",
     skip_bom=True,
     pins={"1": GND, "2": P2, "3": P3},
+    # Purely mechanical part; the sim testbench injects the phantom
+    # supply directly on P2/P3, i.e. where this connector hands off.
+    spice_model=SpiceModel("spice/Connector.lib", "CONN3", nets=[GND, P2, P3], args={}),
 )
 Capacitor(name="CP2", value="100pF", package="0603", dielectric="C0G", voltage="100V", P1=P2, P2=GND)
 Capacitor(name="CP3", value="100pF", package="0603", dielectric="C0G", voltage="100V", P1=P3, P2=GND)
