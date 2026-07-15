@@ -1,0 +1,9 @@
+"""
+electret2xlr
+"""
+
+Board(
+    name="electret2xlr",
+    layout_path="layout",
+    layers=4,
+)

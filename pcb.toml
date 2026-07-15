@@ -1,0 +1,12 @@
+[workspace]
+repository = "github.com/iu3qez/electret2xlr"
+pcb-version = "0.4"
+vendor = ["github.com/diodeinc/registry/**"]
+
+[board]
+name = "electret2xlr"
+path = "electret2xlr.zen"
+description = "Adattatore attivo electret -> XLR bilanciato alimentato da phantom P48, montato dentro un Neutrik NC3MXX."
+
+[access]
+allow = ["*"]
