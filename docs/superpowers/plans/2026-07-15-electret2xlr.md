@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - **Footprint minimo 0603** — mai componenti più piccoli; ammessi 0603/0805/1206/1210, SOT-23, SOD-323/SOD-123.
-- **Componenti a stock LCSC** (preferire basic/preferred parts) o dallo stock personale dell'utente.
+- **Componenti**: per questo progetto (passivi + transistor jellybean, tutte parti non critiche) il vincolo è il **footprint corretto**, non lo stock. Usare `registry-search` di diode per avere parti con footprint pronti per il `.zen`. La verifica di stock LCSC in tempo reale non è richiesta oggi (in futuro: DB jlcparts).
 - **PCB: 4 strati, spessore 0.8mm (non negoziabile), larghezza 11.1mm**, strati interni = piani GND pieni via-stitched.
 - **Alimentazione: solo phantom P48** (48V, 6.8kΩ/ramo); assorbimento simmetrico sui pin 2 e 3.
 - **CB2/CB3 rating ≥50V X7R** (siedono su ~23V DC). CP2/CP3 (100pF sui pin XLR) rating ≥100V C0G (siedono su 48V).
@@ -129,9 +129,9 @@ git commit -m "Scaffolding workspace Zener con board 4 strati vuota"
 - Create: `docs/bom-draft.md`
 
 **Interfaces:**
-- Produces: tabella con, per ogni ref, **MPN + codice LCSC verificato a stock + package**; il Task 4 usa questi MPN nei `Part(mpn=..., manufacturer=...)` / simboli.
+- Produces: tabella con, per ogni ref, **MPN + package + footprint (dal registry diode) + simbolo/parte da usare nel `.zen`**; il Task 4 usa questi identificativi nei `Component(...)` / generics. Il codice LCSC è opzionale (annotarlo se il registry lo espone, ma non è un requisito).
 
-Usare le skill `registry-search` e `librarian`. Requisiti per posizione (valori dalla spec; candidati indicati dove noti, **da verificare a stock**):
+Usare le skill `registry-search` e `librarian` di diode: l'obiettivo è ottenere per ogni posizione una parte con **footprint corretto** già utilizzabile nel `.zen`. Lo stock LCSC NON è un criterio di accettazione per questo progetto (parti tutte non critiche). Requisiti per posizione (valori dalla spec; candidati indicati dove noti):
 
 | Ref | Parte | Requisiti | Candidato |
 |-----|-------|-----------|-----------|
@@ -158,9 +158,9 @@ Usare le skill `registry-search` e `librarian`. Requisiti per posizione (valori 
 | J1 | XLR (pad) | nessun componente: 3 pad sandwich definiti nel layout | — |
 | MIC1 | Piazzole capsula | 2 pad THT Ø1mm passo 2.54mm | — |
 
-- [ ] **Step 1:** per ogni riga, cercare con `registry-search`/LCSC una parte **a stock**, preferendo basic parts; annotare MPN, codice LCSC, package, rating in `docs/bom-draft.md` (stessa struttura della tabella sopra, più colonne LCSC/note).
-- [ ] **Step 2:** per J2 scaricare il datasheet del jack scelto (`datasheet-reader`) e annotare in `docs/bom-draft.md` le dimensioni del corpo e della boccola (servono ai Task 6-7).
-- [ ] **Step 3:** se una posizione non è reperibile con questi vincoli, annotare l'alternativa proposta (valore o package diverso) e **fermarsi a chiedere all'utente** prima di cambiare valori del circuito.
+- [ ] **Step 1:** per ogni riga, cercare con `registry-search` una parte diode con il footprint corretto; annotare MPN, package, footprint e l'identificativo da usare nel `.zen` (Module/Symbol) in `docs/bom-draft.md`. Codice LCSC solo se il registry lo espone (colonna opzionale).
+- [ ] **Step 2:** per J2 individuare un jack 3.5mm TRS PCB-mount adatto e, se il datasheet è reperibile (`datasheet-reader` o web), annotare le dimensioni del corpo e della boccola (servono ai Task 6-7). Se non trovi un jack nel registry, annota comunque un MPN reale plausibile con le sue quote.
+- [ ] **Step 3:** se per una posizione il registry non ha il footprint richiesto, annotare l'alternativa (footprint equivalente ≥0603) e proseguire; segnalare nel report solo se serve cambiare un *valore* del circuito (in quel caso fermarsi).
 - [ ] **Step 4: Commit**
 
 ```bash
