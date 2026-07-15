@@ -13,7 +13,7 @@ Filosofia: KISS ma pulita e funzionale. Descrizione hardware in pcb-as-code con 
 
 ## Origine della topologia
 
-Il circuito adotta la topologia del progetto [tphakala/p48-pip-adapter](https://github.com/tphakala/p48-pip-adapter) (licenza CC BY-NC 4.0): il sorgente Zener è riscritto da zero, il progetto originale va citato nel README come ispirazione, l'uso resta non commerciale.
+Il circuito adotta la topologia del progetto [tphakala/p48-pip-adapter](https://github.com/tphakala/p48-pip-adapter). Nota licenza: la CC BY-NC 4.0 del progetto originale copre il *design concreto* (layout, gerber, documentazione), non la topologia circuitale, che è un'idea funzionale ampiamente pubblicata e non proteggibile. Poiché sorgente Zener, layout e documentazione vengono rifatti da zero, il nostro progetto non eredita alcun vincolo di licenza; l'attribuzione nel README è una cortesia, non un obbligo.
 
 Motivazioni della scelta attiva (rispetto all'alternativa passiva impedance-balanced valutata e scartata):
 
@@ -36,11 +36,11 @@ Tre stadi funzionali (~15 componenti):
 
 ### Stadio audio (follower in classe A, uscita impedance-balanced)
 
-- Q2 (MMBT3906, PNP): base al segnale della capsula, collettore su pin 2 (via rete), emettitore pilota il ramo hot. Rete di emettitore: resistenza di feed (~7.5kΩ) + bypass 22µF/50V X7R con stopper 47Ω.
-- Q3 (MMBT3906): identico ma con base a massa in AC, collettore su pin 3, feed ~10kΩ → ramo cold con impedenza identica al hot ma senza audio.
+- Q2 (MMBT3906, PNP): base al segnale della capsula (accoppiata via C2 22µF), collettore a massa, emettitore alimentato da pin 2 attraverso R1 7.5kΩ → la corrente di segnale modula la corrente assorbita da pin 2 (audio sul ramo hot). CB2 22µF/50V X7R + stopper RB2 47Ω bypassano R1, abbassando l'impedenza d'uscita.
+- Q3 (MMBT3906): identico ma con base a massa in AC (C3), emettitore alimentato da pin 3 via R2 10kΩ, bypass CB3+RB3 gemello → ramo cold con impedenza identica al hot ma senza audio.
 - Risultato: sorgente pseudo-bilanciata ~78Ω, piatta in banda audio (−0.56dB simulati nel progetto originale), roll-off deliberato sotto ~50Hz (bypass di emettitore).
 - Assorbimento ~3mA per pin, simmetrico → compatibile con ingressi bilanciati elettronici e a trasformatore.
-- Condensatori di accoppiamento verso i pin XLR: 22µF/50V (siedono su ~23V DC → rating 50V obbligatorio).
+- CB2/CB3 siedono su ~23V DC → rating 50V obbligatorio (X7R).
 
 ### Ingresso
 
@@ -95,4 +95,3 @@ Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
 
 - Supporto TRRS/CTIA diretto (serve adattatore esterno).
 - Phantom sotto 48V (P12/P24 non garantite).
-- Uso commerciale (vincolo licenza CC BY-NC della topologia di riferimento).

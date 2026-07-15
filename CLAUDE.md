@@ -10,7 +10,7 @@ Adattatore microfono electret → XLR bilanciato alimentato da phantom 48V, desc
 
 ## Toolchain
 
-- `pcb` (Zener) si installa/esegue via **uv**.
+- `pcb` (Zener) è un binario Rust, **non** è su PyPI: si installa con lo script ufficiale `curl -fsSL https://raw.githubusercontent.com/diodeinc/pcb/main/install.sh | bash` (finisce in `~/.local/bin`). Richiede KiCad 10.x per il layout. (`uv` è comunque disponibile per eventuale tooling Python di contorno.)
 - Il repo diodeinc/pcb fornisce skill dedicate in https://github.com/diodeinc/pcb/tree/main/skills (`zener-language`, `registry-search`, `librarian`, `datasheet-reader`, `spice-sim`): usarle per scrivere .zen, cercare componenti e validare il circuito.
 
 ## Contesto d'uso
