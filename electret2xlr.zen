@@ -1,6 +1,110 @@
 """
 electret2xlr
+
+Adattatore attivo electret -> XLR bilanciato, alimentato da phantom power P48.
+Tre stadi: alimentazione a cap-multiplier (D1 8.2V + R9/C4 filtro <1Hz + Q1
+NPN inseguitore -> VPIP), due inseguitori PNP appaiati (Q2 lato caldo su P2,
+Q3 lato freddo con AC a massa su P3), ingresso capsula/jack (J2 TRS + MIC1)
+con filtro anti-RF a pi-greco (CIN/FB1/RIN) e protezione RF ai pin XLR
+(CP2/CP3) + schermo (SHELL/CSH).
 """
+
+Resistor = Module("@stdlib/generics/Resistor.zen")
+Capacitor = Module("@stdlib/generics/Capacitor.zen")
+Zener = Module("@stdlib/generics/Zener.zen")
+FerriteBead = Module("@stdlib/generics/FerriteBead.zen")
+TestPoint = Module("@stdlib/generics/TestPoint.zen")
+
+GND = Net()
+P2 = Net()
+P3 = Net()
+VPIP = Net()
+VREF = Net()
+Q1B = Net()
+MICIN = Net()
+MICF = Net()
+MICOUT = Net()
+Q2B = Net()
+Q2E = Net()
+Q3B = Net()
+Q3E = Net()
+NB2 = Net()
+NB3 = Net()
+SHELL = Net()
+
+# --- alimentazione (cap multiplier) ---
+Resistor(name="R9", value="47kohm", package="0603", P1=P3, P2=VREF)
+Zener(name="D1", package="SOD-123", zener_voltage="8.2V", power="500mW", A=GND, K=VREF)
+Capacitor(name="C4", value="47uF", package="1210", voltage="25V", P1=VREF, P2=GND)
+Resistor(name="R8", value="1kohm", package="0603", P1=VREF, P2=Q1B)
+Component(
+    name="Q1",
+    symbol=Symbol(library="./symbols/Q_NPN_MMBT3904.kicad_sym", name="MMBT3904"),
+    footprint="Package_TO_SOT_SMD:SOT-23",
+    part=Part(mpn="MMBT3904", manufacturer="onsemi"),
+    pins={"B": Q1B, "E": VPIP, "C": P3},
+)
+Capacitor(name="C5", value="10uF", package="0805", voltage="25V", P1=VPIP, P2=GND)
+Capacitor(name="C1", value="22uF", package="1206", dielectric="X5R", voltage="25V", P1=VPIP, P2=GND)
+
+# --- ingresso capsula/jack + anti-RF ---
+Component(
+    name="J2",
+    symbol=Symbol(library="./symbols/Connector_AudioJack3.kicad_sym", name="AudioJack3"),
+    footprint="Connector_Audio:Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal",
+    part=Part(mpn="SJ-3523-SMT-TR", manufacturer="Same Sky (CUI Devices)"),
+    pins={"T": MICIN, "R": MICIN, "S": GND},
+)
+TestPoint(name="MIC1_1", variant="THTPad_D1.0mm_Drill0.5mm", P1=MICIN)
+TestPoint(name="MIC1_2", variant="THTPad_D1.0mm_Drill0.5mm", P1=GND)
+Capacitor(name="CIN", value="220pF", package="0603", dielectric="C0G", P1=MICIN, P2=GND)
+FerriteBead(name="FB1", value="600ohm", frequency="100MHz", current="500mA", package="0603", P1=MICIN, P2=MICF)
+Resistor(name="RIN", value="100ohm", package="0603", P1=MICF, P2=MICOUT)
+Resistor(name="R10", value="6.8kohm", package="0603", P1=VPIP, P2=MICOUT)
+
+# --- stadio audio ---
+Capacitor(name="C2", value="22uF", package="1206", dielectric="X5R", voltage="25V", P1=MICOUT, P2=Q2B)
+Resistor(name="R3", value="100kohm", package="0603", P1=VPIP, P2=Q2B)
+Resistor(name="R4", value="100kohm", package="0603", P1=Q2B, P2=GND)
+Component(
+    name="Q2",
+    symbol=Symbol(library="./symbols/Q_PNP_MMBT3906.kicad_sym", name="MMBT3906"),
+    footprint="Package_TO_SOT_SMD:SOT-23",
+    part=Part(mpn="MMBT3906", manufacturer="onsemi"),
+    pins={"B": Q2B, "E": Q2E, "C": GND},
+)
+Resistor(name="R1", value="7.5kohm", package="1206", P1=P2, P2=Q2E)
+Capacitor(name="CB2", value="22uF", package="1206", dielectric="X7R", voltage="50V", P1=Q2E, P2=NB2)
+Resistor(name="RB2", value="47ohm", package="0603", P1=NB2, P2=P2)
+
+Resistor(name="R6", value="100kohm", package="0603", P1=VPIP, P2=Q3B)
+Resistor(name="R7", value="100kohm", package="0603", P1=Q3B, P2=GND)
+Capacitor(name="C3", value="22uF", package="1206", dielectric="X5R", voltage="25V", P1=Q3B, P2=GND)
+Component(
+    name="Q3",
+    symbol=Symbol(library="./symbols/Q_PNP_MMBT3906.kicad_sym", name="MMBT3906"),
+    footprint="Package_TO_SOT_SMD:SOT-23",
+    part=Part(mpn="MMBT3906", manufacturer="onsemi"),
+    pins={"B": Q3B, "E": Q3E, "C": GND},
+)
+Resistor(name="R2", value="10kohm", package="1206", P1=P3, P2=Q3E)
+Capacitor(name="CB3", value="22uF", package="1206", dielectric="X7R", voltage="50V", P1=Q3E, P2=NB3)
+Resistor(name="RB3", value="47ohm", package="0603", P1=NB3, P2=P3)
+
+# --- XLR e difesa RF ai pin ---
+Component(
+    name="J1",
+    symbol=Symbol(library="./symbols/Connector_XLR3.kicad_sym", name="XLR3"),
+    footprint="Connector_Audio:Jack_XLR_Neutrik_NC3MBH_Horizontal",
+    skip_bom=True,
+    pins={"1": GND, "2": P2, "3": P3},
+)
+Capacitor(name="CP2", value="100pF", package="0603", dielectric="C0G", voltage="100V", P1=P2, P2=GND)
+Capacitor(name="CP3", value="100pF", package="0603", dielectric="C0G", voltage="100V", P1=P3, P2=GND)
+# pcb.toml specifica il connettore NC3MXX (non -EMC): CSH e' popolato di default.
+# Se in un secondo tempo si opta per NC3MXX-EMC (cap schermo-massa gia' integrato
+# nel connettore), impostare dnp=True per evitare la capacita' in doppio.
+Capacitor(name="CSH", value="1nF", package="0603", dielectric="C0G", voltage="100V", dnp=False, P1=SHELL, P2=GND)
 
 Board(
     name="electret2xlr",
