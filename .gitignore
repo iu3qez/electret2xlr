@@ -40,3 +40,5 @@ build/
 
 # KiCad layout history directories
 **/.history/
+layout/layout.log
+*-drc.rpt
