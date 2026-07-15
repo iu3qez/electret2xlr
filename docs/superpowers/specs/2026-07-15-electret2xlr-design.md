@@ -5,7 +5,7 @@
 
 ## Scopo
 
-Adattatore attivo che collega un microfono electret (capsula a 2 terminali saldata, oppure mic da headset/lavalier via jack 3.5mm TRS) a un ingresso XLR bilanciato di una scheda audio, alimentato esclusivamente dalla phantom P48 (48V standard, 6.8kΩ per ramo). Tutto il circuito vive su un PCB montato dentro il corpo di un connettore XLR maschio Neutrik NC3MXX.
+Adattatore attivo che collega un microfono electret (capsula a 2 terminali saldata, oppure mic da headset/lavalier via jack 3.5mm TRS) a un ingresso XLR bilanciato di una scheda audio, alimentato esclusivamente dalla phantom P48 (48V standard, 6.8kΩ per ramo). Il circuito vive su un PCB in un guscio esterno di lamina di rame (schermo), collegato alla scheda audio con un cavetto schermato che termina in uno spinotto XLR maschio volante (NC3MX). *(Il progetto originale prevedeva il montaggio dentro il corpo dell'NC3MXX; abbandonato il 2026-07-16 per mancanza di spazio — vedi §PCB e meccanica.)*
 
 Contesto d'uso: shack radioamatoriale con trasmettitore HF collegato (indirettamente) alla stessa scheda audio → **l'immunità RF è un requisito di progetto**, non un optional.
 
@@ -57,13 +57,24 @@ Tre stadi funzionali (~15 componenti):
 
 ## PCB e meccanica
 
-Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
+> **Aggiornamento 2026-07-16:** il montaggio sandwich in-connettore descritto sotto
+> è stato **abbandonato** (i 32 componenti non entrano nell'NC3MXX). Vedi il nuovo
+> schema qui in cima; il testo sandwich è conservato come storico.
 
-- **4 strati**, strati interni = piani di massa pieni via-stitched (gabbia di Faraday attorno al front-end da µV).
-- **Spessore 0.8mm — obbligatorio, non negoziabile** (1.6mm non entra tra i pin).
-- Larghezza **11.1mm**; sandwich mount: il bordo del PCB si infila tra i tre pin dell'NC3MXX (interasse bicchierini 7.62mm), pad lunghi 8mm su entrambe le facce (pin 1 e 2 sul fronte, pin 3 sul retro), saldatura diretta pin→pad.
-- Lunghezza: da estendere rispetto ai 35.3mm dell'originale per ospitare il jack TRS sul retro, che deve sporgere dalla ghiera posteriore. **Rischio aperto:** fit jack/ghiera da verificare su disegni quotati Neutrik + fit-test STL 3D-printabile prima di ordinare. Piano B: capsula/cavetto attraverso il pressacavo standard.
-- Componenti solo sul lato top; 1206 per le resistenze di feed (dissipazione continua nel guscio chiuso, margine termico a 80°C).
+Schema attuale — **scheda in guscio esterno di lamina di rame** + cavetto schermato con spinotto XLR maschio volante (NC3MX):
+
+- **4 strati** con piani di massa interni (schermatura, in aggiunta al guscio di rame).
+- **Spessore 1.6mm standard** (non più 0.8mm: quello serviva solo al sandwich tra i pin).
+- **Larghezza libera**; outline provvisorio 30×40mm, componenti su entrambi i lati. Da adattare al guscio.
+- Il **guscio di lamina di rame** è la gabbia di Faraday e va **collegato a GND** (pin 1) in almeno un punto.
+- `J1` = 3 piazzole THT a filo (`footprints/J1_XLR3_WirePads.kicad_mod`): pin1=GND/schermo, pin2=hot, pin3=cold, verso il cavetto.
+
+Schema sandwich in-connettore — **STORICO/SUPERATO** (adottato dal p48-pip-adapter, poi scartato per mancanza di spazio):
+
+- 4 strati, piani interni di massa (gabbia di Faraday attorno al front-end da µV).
+- Spessore 0.8mm obbligatorio (1.6mm non entrava tra i pin).
+- Larghezza 11.1mm; sandwich mount tra i tre pin dell'NC3MXX (interasse 7.62mm), pad 8mm su entrambe le facce, saldatura diretta pin→pad.
+- Componenti solo sul lato top; 1206 per le resistenze di feed (dissipazione continua nel guscio chiuso).
 
 ## Componenti
 
@@ -75,7 +86,7 @@ Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
 
 ## Toolchain e struttura repo
 
-- `pcb` (Zener) installato/eseguito via **uv**.
+- `pcb` (Zener) installato con lo script ufficiale (`install.sh`, non da PyPI); KiCad 10.x per il layout.
 - Skill ufficiali diodeinc (repo pcb, cartella `skills/`): `zener-language` per scrivere i .zen, `registry-search`/`librarian` per componenti a stock LCSC, `datasheet-reader` per il fit meccanico, `spice-sim` per la verifica elettrica.
 - Struttura repo:
   - `pcb.toml` — workspace Zener
@@ -87,7 +98,7 @@ Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
 
 1. `pcb build` pulito (netlist + ERC).
 2. `spice-sim`: punto di lavoro DC (rail PIP ~7.5V, assorbimento ~3mA simmetrico per pin, tensioni sui BJT sane) e risposta in frequenza (piatta in banda, roll-off <50Hz).
-3. `pcb layout` → DRC KiCad zero errori; larghezza 11.1mm, spessore 0.8mm nei parametri di fabbricazione.
+3. `pcb layout` → DRC KiCad (placement/routing a cura dell'utente); board 4 strati, spessore 1.6mm, outline adattato al guscio esterno.
 4. Fit meccanico: quote pad pin XLR contro datasheet Neutrik; fit-test fisico prima dell'ordine.
 5. BOM: ogni parte con codice LCSC verificato a stock, o marcata "stock personale".
 

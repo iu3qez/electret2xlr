@@ -1,9 +1,18 @@
-# Verifica fit meccanico — electret2xlr dentro il Neutrik NC3MXX (Task 7)
+> **DECISIONE (2026-07-16) — montaggio in-connettore ABBANDONATO.** La prova di
+> placement ha confermato che nell'NC3MXX (cavità non quotata sui datasheet) **non
+> ci stanno tutti i 32 componenti**. Il progetto è passato a **scheda in guscio
+> esterno di lamina di rame** (gabbia di Faraday) collegata alla scheda audio con un
+> **cavetto schermato + spinotto XLR maschio volante** (NC3MX). Di conseguenza:
+> board non più vincolata a 11.1mm (outline provvisorio 30×40mm), **spessore 1.6mm**
+> standard (non più 0.8mm), 4 strati mantenuti, `J1` = 3 piazzole THT a filo
+> (`footprints/J1_XLR3_WirePads.kicad_mod`). L'analisi qui sotto sul fit dentro
+> l'NC3MXX (Piano A/B, footprint sandwich) è **superata** e conservata solo come
+> storico. Vedi README §"Fattore di forma: guscio esterno schermato".
 
-Stato: **verifica quotata completata, ma con una decisione aperta da confermare
-con l'utente** (vedi §5 — Decisione jack). Vedi anche `docs/bom-draft.md`
-("J2 — dimensioni") e `docs/superpowers/specs/2026-07-15-electret2xlr-design.md`
-(sezione "PCB e meccanica", che segnalava questo come "rischio aperto").
+# Verifica fit meccanico — electret2xlr dentro il Neutrik NC3MXX (Task 7) — STORICO/SUPERATO
+
+Stato: **superato dalla decisione del 2026-07-16** (vedi riquadro sopra). Testo
+originale conservato per storico.
 
 ## 1. Quote scheda e jack (dati di partenza, da Task 3/5/6)
 

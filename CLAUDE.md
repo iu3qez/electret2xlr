@@ -22,8 +22,10 @@ Adattatore microfono electret → XLR bilanciato alimentato da phantom 48V, desc
 - Filosofia KISS: circuito **attivo** ma minimale (cap multiplier + doppio follower PNP bilanciato in impedenza), pulito e funzionale. Topologia ispirata a github.com/tphakala/p48-pip-adapter (riscritta da zero; la CC BY-NC del progetto originale copre il suo design concreto, non la topologia).
 - **Il routing PCB lo fa l'utente** in KiCad: gli step di layout consegnano una board pronta (stackup, outline, footprint, placement) e si fermano lì.
 
-## Stato progetto (2026-07-15)
+## Stato progetto (2026-07-16)
 
-Circuito completo e verificato (`pcb build` pulito, 32 componenti; SPICE: VPIP ~7.5V, ~3mA/pin, risposta piatta in banda, taglio −3dB ~30Hz). Layout 4 strati / 0.8mm / 11.1mm con footprint sandwich J1 custom, pronto per placement+routing. Documentazione in `README.md`, BOM in `docs/bom.md`, spec/piano in `docs/superpowers/`.
+Circuito completo e verificato (`pcb build` pulito, 32 componenti; SPICE: VPIP ~7.5V, ~3mA/pin, risposta piatta in banda, taglio −3dB ~30Hz). Documentazione in `README.md`, BOM in `docs/bom.md`, spec/piano in `docs/superpowers/`.
 
-Aperto: **form factor da decidere dopo un fit-test fisico** — Plan A jack posteriore ~50mm vs Plan B capsula flying-lead ~35.3mm (vedi `docs/meccanica.md`; la cavità NC3MXX non è quotata sui datasheet). CB2/CB3 ratificati a **1µF** (non 22µF). Nessun codice LCSC verificato a stock (parti non critiche).
+**Fattore di forma (deciso 2026-07-16):** montaggio dentro l'NC3MXX **abbandonato** — i 32 componenti non ci stanno. Scheda in **guscio esterno di lamina di rame** (schermo → GND) + cavetto schermato con spinotto **XLR maschio volante** (NC3MX). Board **4 strati / 1.6mm**, outline libero (provvisorio 30×40mm), componenti su entrambi i lati. `J1` = 3 piazzole THT a filo (`footprints/J1_XLR3_WirePads.kicad_mod`). Il footprint sandwich e l'analisi Plan A/B in `docs/meccanica.md` sono storico/superato.
+
+Altro: CB2/CB3 ratificati a **1µF** (non 22µF). **Placement e routing li fa l'utente** in KiCad (la board consegnata ha componenti alle coordinate di import). Nessun codice LCSC verificato a stock (parti non critiche).

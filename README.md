@@ -85,14 +85,14 @@ Toolchain: [`pcb`](https://github.com/diodeinc/pcb) (Zener), versione usata in q
 curl -fsSL https://raw.githubusercontent.com/diodeinc/pcb/main/install.sh | bash
 ```
 
-Serve inoltre **KiCad 10.x** per l'editor di layout. I footprint e i simboli usati (SOT-23, jack TRS, XLR3, il footprint sandwich custom `J1_NC3MXX_Sandwich`) non sono presi dal registry online — che non è raggiungibile in ambienti sandbox senza rete/auth — ma **vendorizzati localmente** in `footprints/` e `symbols/`.
+Serve inoltre **KiCad 10.x** per l'editor di layout. I footprint e i simboli usati (SOT-23, jack TRS, XLR3, le piazzole a filo custom `J1_XLR3_WirePads` per lo spinotto XLR volante) non sono presi dal registry online — che non è raggiungibile in ambienti sandbox senza rete/auth — ma **vendorizzati localmente** in `footprints/` e `symbols/`.
 
 ```bash
 pcb build electret2xlr.zen   # genera netlist + ERC
 pcb layout electret2xlr.zen  # apre/aggiorna il layout in KiCad
 ```
 
-Il file `layout/layout.kicad_pcb` importato riflette board a 4 strati, 0.8mm di spessore, 11.1mm di larghezza. **Placement e routing sono lasciati intenzionalmente all'utente in KiCad**: i footprint importati sono ancora alle coordinate di import del netlist, non è stato eseguito alcun autorouting né posizionamento definitivo (vedi `docs/meccanica.md`).
+Il file `layout/layout.kicad_pcb` importato riflette board a 4 strati, 1.6mm di spessore, con outline provvisorio 30×40mm (guscio esterno — vedi §Fattore di forma). **Placement e routing sono lasciati intenzionalmente all'utente in KiCad**: i footprint importati sono ancora alle coordinate di import del netlist, non è stato eseguito alcun autorouting né posizionamento definitivo. La DRC su questo stato riporta i 51 net non connessi (da instradare) e alcune violazioni di sovrapposizione dovute a `J1` auto-piazzato sopra il gruppo C4/Q2/J2: si azzerano spostando i componenti in fase di placement.
 
 Per la verifica SPICE (facoltativa, richiede un binario `ngspice` raggiungibile):
 
@@ -103,32 +103,29 @@ NGSPICE=/path/to/ngspice pcb sim electret2xlr.zen \
 
 `sim_mode=true` esclude dal netlist SPICE i due test point (TP MIC1_1/MIC1_2), privi di modello SPICE proprio nello stdlib; in build normale (`pcb build`, senza `--config`) restano popolati come piazzole reali.
 
-## Fattore di forma: decisione aperta
+## Fattore di forma: guscio esterno schermato
 
-La lunghezza finale della board **non è ancora congelata** — è una decisione dell'utente, da confermare con un fit-test fisico prima di ordinare. Due opzioni, entrambe descritte in dettaglio in `docs/meccanica.md`:
+Il montaggio dentro il corpo del connettore XLR (sandwich in-connettore, come il `p48-pip-adapter`) è stato **abbandonato**: la cavità dell'NC3MXX è troppo piccola per piazzarci tutti i 32 componenti. La scheda vive invece in un **guscio esterno di lamina di rame**, che fa da gabbia di Faraday, collegata alla scheda audio con un **cavetto schermato che termina in uno spinotto XLR maschio volante** (es. Neutrik NC3MX).
 
-- **Piano A — jack J2 sul bordo posteriore della scheda** (schema attualmente autorato in `electret2xlr.zen`): board stimata **~50mm**, mic 3.5mm collegabile direttamente nel corpo XLR, ma fit nello shell NC3MXX **non verificato** (nessuna quota Neutrik ufficiale della cavità interna disponibile; rischio concreto di non entrare).
-- **Piano B — capsula su cavetto flying-lead** attraverso il pressacavo standard del NC3MXX (nessun jack a bordo): board **~35.3mm**, stesso ingombro del precedente `p48-pip-adapter` **verificato fisicamente** — rischio di fit sostanzialmente azzerato, ma si perde la comodità dello spinotto 3.5mm diretto nel corpo del connettore.
+Conseguenze di progetto:
 
-Prima di ordinare PCB/connettori: eseguire il fit-test raccomandato in `docs/meccanica.md` §6 (sagoma di cartoncino nella lunghezza scelta, o PCB nudo, inserita nello shell NC3MXX aperto) e poi congelare l'outline di conseguenza.
+- La board **non è più vincolata a 11.1mm**: outline comodo (default provvisorio 30×40mm nel layout, da adattare al tuo guscio), componenti su **entrambi i lati**.
+- **Spessore standard 1.6mm** (non più 0.8mm: quello serviva solo a infilarsi tra i pin dell'XLR).
+- **4 strati mantenuti** con i piani di massa interni: doppia schermatura, guscio di rame + piani interni.
+- Il guscio di rame è lo **schermo**: va **collegato a massa (GND, cioè pin 1)** in almeno un punto — tipicamente saldando un lembo del rame a una piazzola GND della board. Il connettore `J1` nel netlist sono le 3 piazzole THT a filo (`footprints/J1_XLR3_WirePads.kicad_mod`) verso il cavetto: pin1=GND/schermo, pin2=hot, pin3=cold.
 
-## Montaggio nel connettore NC3MXX (saldatura sandwich)
+## Montaggio e cablaggio XLR
 
-Il bordo della scheda si infila fra i tre pin/bicchierini del NC3MXX (interasse 7.62mm): pin 1 e pin 2 hanno il loro pad sul lato **top (F.Cu)** della board, pin 3 sul lato **bottom (B.Cu)** — un vero sandwich, senza connettore fisico intermedio. Sequenza di saldatura raccomandata (dal precedente verificato `p48-pip-adapter`, clearance sul pad di pin 3 fino a ~0.5–0.7mm, quindi tecnica delicata):
+1. Saldare i tre fili del cavetto schermato alle piazzole THT `J1`: **pin1=GND** (allo stesso capo va anche la calza del cavetto e il lembo del guscio di rame), **pin2=hot (P2)**, **pin3=cold (P3)**.
+2. All'altro capo del cavetto, cablare lo spinotto XLR maschio volante (NC3MX) rispettando lo standard: **pin1=schermo/GND, pin2=hot (+), pin3=cold (−)**.
+3. Chiudere la board nel guscio di lamina di rame, bondando il rame a GND. Verificare che il rame non tocchi piazzole a tensione (isolare con nastro/kapton dove serve).
 
-1. **Pre-stagnare** sia il pad posteriore di pin 3 sulla board sia il bicchierino (cup) di pin 3 del connettore, separatamente, prima di assemblare.
-2. **Appoggiare/incastrare** la scheda contro i pin 1 e 2 (lato top), verificando l'allineamento fisico prima di applicare calore.
-3. Saldare pin 1 e pin 2 (accessibili dal lato top).
-4. **Per ultimo**, richiudere/pontare la saldatura di pin 3 sul retro, scaldando lo stagno pre-depositato al passo 1 fino a fusione e unione — è il punto a clearance più stretta, va fatto con cura e per ultimo per non doverlo poi disturbare durante la manipolazione degli altri due pin.
-
-Verificare visivamente che non ci siano ponti di stagno accidentali fra pin adiacenti prima di richiudere lo shell.
-
-**Pad guscio (SHELL):** la piazzola di contatto con la calotta metallica del connettore (nodo `SHELL`, dove arriva CSH) è una feature di rame da disegnare **a mano nel layout KiCad** — non è un componente della netlist. Di conseguenza `pcb build` segnala un warning ERC di net a singolo pin per `SHELL`: è atteso e corretto, non un errore.
+**Nodo SHELL:** il pad di contatto col guscio di rame (nodo `SHELL`, dove arriva CSH) è una feature di rame da disegnare **a mano nel layout KiCad** e da collegare a GND — non è un componente della netlist. `pcb build` segnala perciò un warning ERC di net a singolo pin per `SHELL`: è atteso e corretto, non un errore.
 
 ## Cablaggio capsula / jack
 
-- **Capsula a 2 terminali saldata diretta**: sulle piazzole THT MIC1 (passo 2.54mm), segnale/bias su un pad, GND sull'altro — nessuna polarità critica lato pad (la capsula stessa ha verso, va rispettato secondo il suo datasheet).
-- **Jack 3.5mm TRS (J2)**, se montato: **tip = segnale/bias**, **ring** ponticellato al tip (compatibilità con capsule TRS a 2 terminali che usano ring per il secondo contatto), **sleeve = GND**.
+- **Capsula a 2 terminali saldata diretta**: sulle piazzole THT MIC1 (passo 2.54mm), segnale/bias su un pad, GND sull'altro — nessuna polarità critica lato pad (la capsula stessa ha verso, va rispettato secondo il suo datasheet). Il cavetto della capsula esce dal guscio schermato.
+- **Jack 3.5mm TRS (J2)**, se montato sul guscio: **tip = segnale/bias**, **ring** ponticellato al tip (compatibilità con capsule TRS a 2 terminali che usano ring per il secondo contatto), **sleeve = GND**.
 - **Cuffiette/headset TRRS da smartphone non sono utilizzabili direttamente**: serve un adattatore esterno TRRS→TRS. Non è supportato un quarto contatto (es. commutazione mic/altoparlante) su questo jack.
 
 ## Attribuzione e licenza
