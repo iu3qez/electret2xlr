@@ -1,0 +1,110 @@
+(footprint "J1_NC3MXX_Sandwich"
+	(version 20241229)
+	(generator "electret2xlr-custom")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(descr "Custom sandwich mount for Neutrik NC3MXX 3-pin male XLR chassis connector. Solder-cup pitch 7.62mm. Three 8mm-long pads (2mm wide) at board XLR edge: pin1 (GND) FRONT x=1.90mm, pin2 (P2) FRONT x=9.52mm, pin3 (P3) BACK x=5.71mm. Origin = board XLR edge / left corner, pads extend from y=0 (edge) to y=8mm.")
+	(tags "XLR NC3MXX sandwich phantom")
+	(attr smd exclude_from_pos_files)
+	(property "Reference" "J1"
+		(at 5.71 -1.6 0)
+		(layer "F.SilkS")
+		(uuid a0fd6487-0757-4f36-8aea-93232cd9ed89)
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "XLR3_NC3MXX"
+		(at 5.71 9.6 0)
+		(layer "F.Fab")
+		(uuid a868b4c6-c4d2-4581-84d3-13473c0914f7)
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid c6228851-fe88-47fb-a728-668e528ae0c9)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid 5e24a12c-36db-4533-b51a-e0f305dc5ed0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "NC3MXX sandwich pads"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid 6addbac0-9bdc-4de9-ae52-35993560d45d)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 5.71 4 0)
+		(layer "F.Fab")
+		(uuid 6a9c14c4-08df-4416-9bfe-ffa2571f9e0e)
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(fp_line
+		(start 0.6 0)
+		(end 0.6 8)
+		(stroke (width 0.1) (type solid))
+		(layer "F.Fab")
+		(uuid 022218ca-086b-45e1-863e-65da6597abb4)
+	)
+	(fp_line
+		(start 10.82 0)
+		(end 10.82 8)
+		(stroke (width 0.1) (type solid))
+		(layer "F.Fab")
+		(uuid 83e49511-dce2-4693-94e3-d6c0f1677f38)
+	)
+	(pad "1" smd rect
+		(at 1.90 4)
+		(size 2 8)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid 11111111-0000-4000-8000-000000000001)
+	)
+	(pad "2" smd rect
+		(at 9.52 4)
+		(size 2 8)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid 11111111-0000-4000-8000-000000000002)
+	)
+	(pad "3" smd rect
+		(at 5.71 4)
+		(size 2 8)
+		(layers "B.Cu" "B.Paste" "B.Mask")
+		(uuid 11111111-0000-4000-8000-000000000003)
+	)
+)
