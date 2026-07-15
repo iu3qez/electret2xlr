@@ -36,7 +36,7 @@ Tre stadi funzionali (~15 componenti):
 
 ### Stadio audio (follower in classe A, uscita impedance-balanced)
 
-- Q2 (MMBT3906, PNP): base al segnale della capsula (accoppiata via C2 22µF), collettore a massa, emettitore alimentato da pin 2 attraverso R1 7.5kΩ → la corrente di segnale modula la corrente assorbita da pin 2 (audio sul ramo hot). CB2 22µF/50V X7R + stopper RB2 47Ω bypassano R1, abbassando l'impedenza d'uscita.
+- Q2 (MMBT3906, PNP): base al segnale della capsula (accoppiata via C2 22µF), collettore a massa, emettitore alimentato da pin 2 attraverso R1 7.5kΩ → la corrente di segnale modula la corrente assorbita da pin 2 (audio sul ramo hot). CB2 1µF/50V X7R + stopper RB2 47Ω bypassano R1, abbassando l'impedenza d'uscita. (Valore rivisto da 22µF a 1µF in Task 5: con 22µF il taglio passa-alto cadeva a ~1Hz, contraddicendo il roll-off dolce sotto ~50Hz voluto; 1µF porta il ginocchio a ~30Hz — vedi `docs/sim-results.md`.)
 - Q3 (MMBT3906): identico ma con base a massa in AC (C3), emettitore alimentato da pin 3 via R2 10kΩ, bypass CB3+RB3 gemello → ramo cold con impedenza identica al hot ma senza audio.
 - Risultato: sorgente pseudo-bilanciata ~78Ω, piatta in banda audio (−0.56dB simulati nel progetto originale), roll-off deliberato sotto ~50Hz (bypass di emettitore).
 - Assorbimento ~3mA per pin, simmetrico → compatibile con ingressi bilanciati elettronici e a trasformatore.
@@ -69,7 +69,7 @@ Schema meccanico adottato in blocco dal p48-pip-adapter (collaudato):
 
 - Tutti jellybean, **a stock LCSC** (preferire basic/preferred parts) o dallo stock personale, come da CLAUDE.md.
 - **Vincolo footprint: nessun componente sotto lo 0603** (saldabilità a mano). Ammessi 0603/0805/1206, SOT-23, SOD-323.
-- Transistor: MMBT3904 / MMBT3906 (SOT-23). Zener 8.2V SOD-323. Ceramici X7R 50V per i 22µF.
+- Transistor: MMBT3904 / MMBT3906 (SOT-23). Zener 8.2V SOD-323. Ceramici X7R 50V dove siedono su tensione elevata (accoppiamenti/bypass a ~23V DC).
 - Gli opamp a stock (LM8261, LM358D) sono stati valutati e scartati: non reggono 48V (servirebbe comunque il regolatore), LM358 rumoroso e con crossover, e si perderebbe il bilanciamento DC naturale dei collettori sui pin.
 - I valori sono nominali: possibile bench tuning dopo il primo prototipo.
 

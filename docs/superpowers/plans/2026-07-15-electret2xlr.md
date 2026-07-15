@@ -16,7 +16,7 @@
 - **Componenti**: per questo progetto (passivi + transistor jellybean, tutte parti non critiche) il vincolo è il **footprint corretto**, non lo stock. Usare `registry-search` di diode per avere parti con footprint pronti per il `.zen`. La verifica di stock LCSC in tempo reale non è richiesta oggi (in futuro: DB jlcparts).
 - **PCB: 4 strati, spessore 0.8mm (non negoziabile), larghezza 11.1mm**, strati interni = piani GND pieni via-stitched.
 - **Alimentazione: solo phantom P48** (48V, 6.8kΩ/ramo); assorbimento simmetrico sui pin 2 e 3.
-- **CB2/CB3 rating ≥50V X7R** (siedono su ~23V DC). CP2/CP3 (100pF sui pin XLR) rating ≥100V C0G (siedono su 48V).
+- **CB2/CB3 = 1µF X7R ≥50V** (siedono su ~23V DC; valore ratificato in Task 5 — 22µF metteva il taglio a ~1Hz contro il roll-off ~30-50Hz voluto). CP2/CP3 (100pF sui pin XLR) rating ≥100V C0G (siedono su 48V).
 - Commit frequenti, messaggi in italiano che spiegano il perché, **niente riga Co-Authored-By**.
 - Il "test" di ogni modifica al sorgente è `pcb build` pulito; per il layout è la DRC KiCad a zero errori.
 
@@ -139,7 +139,7 @@ Usare le skill `registry-search` e `librarian` di diode: l'obiettivo è ottenere
 | Q2, Q3 | MMBT3906 | PNP SOT-23 | LCSC C8492 |
 | D1 | Zener 8.2V | SOD-123/SOD-323, ≥300mW | BZT52C8V2 |
 | C1, C2, C3 | 22µF | X5R/X7R ≥16V, 1206/1210 | — |
-| CB2, CB3 | 22µF | **X7R ≥50V**, 1206/1210 (se introvabile in 1206, 1210 è ammesso) | — |
+| CB2, CB3 | 1µF (ratificato in Task 5) | **X7R ≥50V**, 1206/1210 | — |
 | C4 | 47µF | ≥16V, ≤1210 | — |
 | C5 | 10µF | ≥16V, 0805 | — |
 | R1 | 7.5kΩ | **1206** (67mW continui) | — |
