@@ -119,10 +119,13 @@ Capacitor(name="CB3", value="1uF", package="1206", dielectric="X7R", voltage="50
 Resistor(name="RB3", value="47ohm", package="0603", P1=NB3, P2=P3)
 
 # --- XLR e difesa RF ai pin ---
+# Scheda in guscio esterno di lamina di rame (schermo -> GND), collegata alla
+# scheda audio con un cavetto schermato che termina in uno spinotto XLR maschio
+# volante (NC3MX): J1 sono 3 piazzole THT a filo (pin1=GND/schermo, 2=hot, 3=cold).
 Component(
     name="J1",
     symbol=Symbol(library="./symbols/Connector_XLR3.kicad_sym", name="XLR3"),
-    footprint="./footprints/J1_NC3MXX_Sandwich.kicad_mod",
+    footprint="./footprints/J1_XLR3_WirePads.kicad_mod",
     skip_bom=True,
     pins={"1": GND, "2": P2, "3": P3},
     # Purely mechanical part; the sim testbench injects the phantom
