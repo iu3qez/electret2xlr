@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(general
-		(thickness 0.8)
+		(thickness 1.6062)
 		(legacy_teardrops no)
 	)
 	(paper "A4")
@@ -71,7 +71,7 @@
 	)
 	(layer "dielectric 2"
 		(type "core")
-		(thickness 0.26)
+		(thickness 1.065)
 		(material "FR4-Core")
 		(epsilon_r 4.6)
 		(loss_tangent 0.025)
@@ -5033,140 +5033,6 @@
 			)
 		)
 	)
-	(footprint "iu3qez_electret2xlr_footprints:J1_NC3MXX_Sandwich"
-		(layer "F.Cu")
-		(uuid "9a03185c-6d9a-4af7-94e4-2cbf763ab15a")
-		(at 153.225 106.025)
-		(descr "Custom sandwich mount for Neutrik NC3MXX 3-pin male XLR chassis connector. Solder-cup pitch 7.62mm. Three 8mm-long pads (2mm wide) at board XLR edge: pin1 (GND) FRONT x=1.90mm, pin2 (P2) FRONT x=9.52mm, pin3 (P3) BACK x=5.71mm. Origin = board XLR edge / left corner, pads extend from y=0 (edge) to y=8mm.")
-		(tags "XLR NC3MXX sandwich phantom")
-		(property "Reference" "J1"
-			(at 5.71 -1.6 0)
-			(layer "F.SilkS")
-			(uuid "e20c1ab2-8ef7-4ec0-a8db-d58e4706ef64")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "?"
-			(at 5.71 9.6 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "eab02d63-f461-4519-b907-94a399e6d322")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "bc4b76bd-a2fa-41a7-b861-7e567d8323d5")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Description" "XLR Connector, Male or Female, 3 Pins"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "5362c7c4-acf7-4292-a662-4e0c24b6b405")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Path" "J1"
-			(at 0 0 0)
-			(layer "F.SilkS")
-			(hide yes)
-			(uuid "ccde3684-978b-4cf7-9d71-b10da6afc1d5")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Prefix" "J"
-			(at 0 0 0)
-			(layer "F.SilkS")
-			(hide yes)
-			(uuid "5ced21e3-6f18-4ba1-9365-a7b1e6aad3a7")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(path "/b41f0e40-6e2d-5762-aae6-ebde6de0375a/b41f0e40-6e2d-5762-aae6-ebde6de0375a")
-		(attr smd exclude_from_bom)
-		(duplicate_pad_numbers_are_jumpers no)
-		(fp_line
-			(start 0.6 0)
-			(end 0.6 8)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "47c0ea69-a3b4-4f81-af84-db4409bbdfd6")
-		)
-		(fp_line
-			(start 10.82 0)
-			(end 10.82 8)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "85073c69-4223-45b3-9695-31584a0ac7db")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 5.71 4 0)
-			(layer "F.Fab")
-			(uuid "c0f91d96-f3f5-447c-9a5f-b73eb22645cd")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "1" smd rect
-			(at 1.9 4)
-			(size 2 8)
-			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "GND")
-			(uuid "9cfba544-daa4-4852-b600-a0b4afd12c01")
-		)
-		(pad "2" smd rect
-			(at 9.52 4)
-			(size 2 8)
-			(layers "F.Cu" "F.Mask" "F.Paste")
-			(net "P2")
-			(uuid "4435c4d6-0e6b-4506-b27c-7e73fee481ce")
-		)
-		(pad "3" smd rect
-			(at 5.71 4)
-			(size 2 8)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(net "P3")
-			(uuid "37f5d1c4-45c8-4f7f-8096-179e05c6ded1")
-		)
-		(embedded_fonts no)
-	)
 	(footprint "stdlib_kicad-footprints_Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "9be26763-4e13-4c63-b4c9-085ef24fc31d")
@@ -7374,6 +7240,146 @@
 			)
 		)
 	)
+	(footprint "iu3qez_electret2xlr_footprints:J1_XLR3_WirePads"
+		(layer "F.Cu")
+		(uuid "ec3f1ac7-9056-4998-871a-818ce21dd706")
+		(at 153.225 106.025)
+		(descr "Tre piazzole THT per saldare i fili del cavetto verso uno spinotto XLR maschio volante (NC3MX). pin1=GND/schermo, pin2=hot, pin3=cold. Passo 3.81mm, foro 0.8mm per filo fino a ~0.5mm. Sostituisce il montaggio sandwich in-connettore.")
+		(tags "XLR wire pads flying-lead")
+		(property "Reference" "J1"
+			(at 3.81 -2.2 0)
+			(layer "F.SilkS")
+			(uuid "d09b0097-e476-4746-a39e-1a76089a966a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "?"
+			(at 3.81 2.4 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "dc4adf3c-b70c-4cca-a30f-665a61e86e83")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "00187bab-aa14-4e91-8e0c-73af6129d434")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "XLR Connector, Male or Female, 3 Pins"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7669e799-6eea-402d-b42f-7a92382939bf")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Path" "J1"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "0eaf5133-edd2-4b79-a972-29736790cb25")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Prefix" "J"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "0d4bb38d-e9fc-40b0-a2b0-c6712c69c1a8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(path "/b41f0e40-6e2d-5762-aae6-ebde6de0375a/b41f0e40-6e2d-5762-aae6-ebde6de0375a")
+		(attr through_hole exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_text user "1"
+			(at 0 -1.6 0)
+			(layer "F.SilkS")
+			(uuid "8618c153-4c90-4fdb-bf0d-f60f54f467b6")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "2"
+			(at 3.81 -1.6 0)
+			(layer "F.SilkS")
+			(uuid "4b033526-1ed5-40ef-91ff-5887244997dc")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "3"
+			(at 7.62 -1.6 0)
+			(layer "F.SilkS")
+			(uuid "c4dee899-79c0-4e93-ade7-c5c9dd5d46b7")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(pad "1" thru_hole rect
+			(at 0 0)
+			(size 1.7 1.7)
+			(drill 0.8)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "GND")
+			(uuid "b7897bdb-f801-4f99-a268-3703648dc6a2")
+		)
+		(pad "2" thru_hole circle
+			(at 3.81 0)
+			(size 1.7 1.7)
+			(drill 0.8)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "P2")
+			(uuid "0b131879-0bd2-473f-9177-fcd256250c05")
+		)
+		(pad "3" thru_hole circle
+			(at 7.62 0)
+			(size 1.7 1.7)
+			(drill 0.8)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(net "P3")
+			(uuid "3f6a6d2a-a543-44ce-80f8-9fcf73e39dad")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "stdlib_kicad-footprints_Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f3ced1c7-af1e-4ad5-a8e8-df0d5c977cf8")
@@ -9271,10 +9277,10 @@
 	)
 	(gr_rect
 		(start 50.0 50.0)
-		(end 61.1 95.0)
+		(end 80.0 90.0)
 		(stroke (width 0.1) (type default))
 		(fill none)
 		(layer "Edge.Cuts")
-		(uuid "903f3d3c-d8d3-4169-a821-f58d89e4572b")
+		(uuid "76459b52-59d6-4b7e-a3be-e6bbd1f44f47")
 	)
 )
