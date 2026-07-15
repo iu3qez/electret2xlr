@@ -52,6 +52,31 @@ Da `docs/sim-results.md` (ngspice via `pcb sim`, criteri di accettazione della s
 
 Nota: la fase dell'uscita differenziale (P2−P3) a 1kHz risulta ≈ −179° (sostanzialmente invertita rispetto al segno convenzionale atteso) — comportamento noto e condiviso con il progetto di origine (issue #6 di p48-pip-adapter), non corretto in questa revisione: un eventuale scambio hot/cold è una verifica da banco, non da tavolino. Dettagli in `docs/sim-results.md`.
 
+## Setup su una nuova macchina
+
+Prerequisiti:
+
+- **`pcb`** (toolchain Zener di diode) — binario Rust, **non** su PyPI:
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/diodeinc/pcb/main/install.sh | bash
+  export PATH="$HOME/.local/bin:$PATH"   # aggiungilo al tuo profilo shell
+  pcb --version                          # atteso: pcbc 0.4.x
+  ```
+- **KiCad 10.x** (serve solo per `pcb layout` / editor). Verifica con `kicad-cli version`. Opzioni di installazione, in ordine di comodità:
+  - **AppImage ufficiale** dalla pagina download di KiCad (nessun sudo, non tocca il pacchetto di sistema) — consigliata se hai già una KiCad 9 installata;
+  - **Flatpak**: `flatpak install flathub org.kicad.KiCad` (di solito già all'ultima release);
+  - pacchetto della distro, se offre già la 10.x.
+- `git` per clonare il repo. `ngspice` **solo** se vuoi rieseguire la verifica SPICE (facoltativo).
+
+Poi:
+
+```bash
+git clone https://github.com/iu3qez/electret2xlr && cd electret2xlr
+pcb build electret2xlr.zen    # atteso: 32 componenti, nessun errore
+```
+
+> **Non serve `pcb auth login` né accesso al registry online.** Footprint e simboli sono vendorizzati nel repo (`footprints/`, `symbols/`), quindi un clone pulito builda offline. Il login diode servirebbe solo per attingere a componenti dal registry, cosa che questo progetto non fa.
+
 ## Build
 
 Toolchain: [`pcb`](https://github.com/diodeinc/pcb) (Zener), versione usata in questo progetto `pcbc 0.4.7`, installato con lo script ufficiale (**non** da PyPI):
