@@ -3,7 +3,7 @@
 > ci stanno tutti i 32 componenti**. Il progetto è passato a **scheda in guscio
 > esterno di lamina di rame** (gabbia di Faraday) collegata alla scheda audio con un
 > **cavetto schermato + spinotto XLR maschio volante** (NC3MX). Di conseguenza:
-> board non più vincolata a 11.1mm (outline provvisorio 30×40mm), **spessore 1.6mm**
+> board non più vincolata a 11.1mm (outline 50×40mm), **spessore 1.6mm**
 > standard (non più 0.8mm), 4 strati mantenuti, `J1` = 3 piazzole THT a filo
 > (`footprints/J1_XLR3_WirePads.kicad_mod`). L'analisi qui sotto sul fit dentro
 > l'NC3MXX (Piano A/B, footprint sandwich) è **superata** e conservata solo come

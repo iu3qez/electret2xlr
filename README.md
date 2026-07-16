@@ -43,7 +43,7 @@ pcb layout electret2xlr.zen                 # open/update layout in KiCad
 
 Footprints and symbols are **vendored** (`footprints/`, `symbols/`), so a clean clone builds offline — **no `pcb auth login` or online registry needed**. KiCad 10.x install: official AppImage (no sudo), Flatpak `org.kicad.KiCad`, or a distro package with 10.x.
 
-**Placement and routing are left to the user.** The imported `layout/layout.kicad_pcb` (4-layer, 1.6 mm, provisional 30×40 mm outline) has components at netlist-import coordinates. DRC therefore reports the 51 unrouted nets plus a few overlap violations from `J1` auto-dropped onto the C4/Q2/J2 cluster — both clear once parts are placed.
+**Placement and routing are left to the user.** The imported `layout/layout.kicad_pcb` (4-layer, 1.6 mm, 50×40 mm outline) has components at netlist-import coordinates. DRC therefore reports the 51 unrouted nets plus a few overlap violations from `J1` auto-dropped onto the C4/Q2/J2 cluster — both clear once parts are placed.
 
 Optional SPICE re-run (needs `ngspice`):
 

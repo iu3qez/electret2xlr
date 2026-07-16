@@ -26,6 +26,6 @@ Adattatore microfono electret → XLR bilanciato alimentato da phantom 48V, desc
 
 Circuito completo e verificato (`pcb build` pulito, 32 componenti; SPICE: VPIP ~7.5V, ~3mA/pin, risposta piatta in banda, taglio −3dB ~30Hz). Documentazione in `README.md`, BOM in `docs/bom.md`, spec/piano in `docs/superpowers/`.
 
-**Fattore di forma (deciso 2026-07-16):** montaggio dentro l'NC3MXX **abbandonato** — i 32 componenti non ci stanno. Scheda in **guscio esterno di lamina di rame** (schermo → GND) + cavetto schermato con spinotto **XLR maschio volante** (NC3MX). Board **4 strati / 1.6mm**, outline libero (provvisorio 30×40mm), componenti su entrambi i lati. `J1` = 3 piazzole THT a filo (`footprints/J1_XLR3_WirePads.kicad_mod`). Il footprint sandwich e l'analisi Plan A/B in `docs/meccanica.md` sono storico/superato.
+**Fattore di forma (deciso 2026-07-16):** montaggio dentro l'NC3MXX **abbandonato** — i 32 componenti non ci stanno. Scheda in **guscio esterno di lamina di rame** (schermo → GND) + cavetto schermato con spinotto **XLR maschio volante** (NC3MX). Board **4 strati / 1.6mm**, outline libero (50×40mm), componenti su entrambi i lati. `J1` = 3 piazzole THT a filo (`footprints/J1_XLR3_WirePads.kicad_mod`). Il footprint sandwich e l'analisi Plan A/B in `docs/meccanica.md` sono storico/superato.
 
 Altro: CB2/CB3 ratificati a **1µF** (non 22µF). **Placement e routing li fa l'utente** in KiCad (la board consegnata ha componenti alle coordinate di import). Nessun codice LCSC verificato a stock (parti non critiche).
